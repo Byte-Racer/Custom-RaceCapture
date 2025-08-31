@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaceCapture, But Better!</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard</h1>
+            <div class="controls">
+                <button id="startBtn" class="btn btn-start">Start Recording</button>
+                <button id="stopBtn" class="btn btn-stop">Stop Recording</button>
+                <button id="downloadBtn" class="btn btn-download">Save to CSV</button>
+                <div id="recordingStatus" class="recording-status">STOPPED</div>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="sensor-selection">
+                <h2>Sensors</h2>
+                <div id="sensorList" class="sensor-list">
+                    <!-- Sensor checkboxes will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="graphs">
+                <div class="graph-container">
+                    <h2>Speed and RPM</h2>
+                    <canvas id="telemetryChart"></canvas>
+                </div>
+
+                <div class="graph-container">
+                    <h2>Voltage and Temp</h2>
+                    <canvas id="voltageTempChart"></canvas>
+                </div>
+
+                <div class="graph-container">
+                    <h2>Pedal Inputs</h2>
+                    <canvas id="pedalChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
