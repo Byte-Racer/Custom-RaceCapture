@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #313244;
+}
+
+h1 {
+    color: #74c7ec;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.btn-start {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+.btn-stop {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+.btn-download {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.recording-status {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.recording {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+.stopped {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+}
+
+.sensor-selection {
+    background-color: #313244;
+    padding: 20px;
+    border-radius: 12px;
+    height: fit-content;
+}
+
+.sensor-selection h2 {
+    margin-bottom: 15px;
+    color: #74c7ec;
+    font-weight: 600;
+}
+
+.sensor-list {
+    margin-top: 15px;
+}
+
+.sensor-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #45475a;
+    transition: background-color 0.3s ease;
+}
+
+.sensor-item:hover {
+    background-color: #585b70;
+}
+
+.sensor-item input {
+    margin-right: 12px;
+    accent-color: #89b4fa;
+    transform: scale(1.2);
+}
+
+.sensor-item label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.sensor-value {
+    color: #f5c2e7;
+    font-weight: 600;
+}
+
+.graphs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.graph-container {
+    background-color: #313244;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.graph-container h2 {
+    margin-bottom: 15px;
+    color: #74c7ec;
+    font-weight: 600;
+}
+
+canvas {
+    width: 100% !important;
+    height: 200px !important;
+}
+
+@media (max-width: 1000px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
