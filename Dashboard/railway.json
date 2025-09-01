@@ -1,3 +1,3 @@
 {
-  "start": "python RCD.py"
+  "start": "python app.py"
 }
