@@ -4,15 +4,31 @@ let telemetryChart, voltageTempChart, pedalChart;
 let recording = false;
 const maxHistoryPoints = 50;
 let sensorHistory = {};
+let sensorUpdateInterval;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeCharts();
     loadSensors();
-    setInterval(updateSensors, 100); // Update every 100ms
-    setInterval(updateCharts, 100); // Update charts every 100ms
     setupEventListeners();
+
+    // Set up sensor value updates
+    startSensorUpdates();
 });
+
+// Start updating sensor values at a specific refresh rate
+function startSensorUpdates() {
+    // Clear any existing interval
+    if (sensorUpdateInterval) {
+        clearInterval(sensorUpdateInterval);
+    }
+
+    // Update sensors every 500ms (adjust this value as needed)
+    sensorUpdateInterval = setInterval(() => {
+        updateSensors();
+        updateCharts();
+    }, 500);
+}
 
 // Initialize Chart.js charts
 function initializeCharts() {
@@ -169,7 +185,7 @@ function loadSensors() {
         .then(response => response.json())
         .then(data => {
             sensors = data;
-            renderSensorList();
+            renderSensorGrid();
         });
 
     // Load initial history data
@@ -181,42 +197,34 @@ function loadSensors() {
         });
 }
 
-// Render the sensor selection list
-function renderSensorList() {
-    const sensorList = document.getElementById('sensorList');
-    sensorList.innerHTML = '';
+// Render the sensor grid
+function renderSensorGrid() {
+    const sensorGrid = document.getElementById('sensorGrid');
+    sensorGrid.innerHTML = '';
 
-    for (const [name, data] of Object.entries(sensors)) {
-        const div = document.createElement('div');
-        div.className = 'sensor-item';
+    // Define the sensor order for the grid
+    const sensorOrder = [
+        "Accel X (g)", "Accel Y (g)",
+        "Accel Z (g)", "Battery Voltage (V)",
+        "Motor Temp (°C)", "RPM",
+        "Speed (km/h)", "Throttle (%)"
+    ];
 
-        div.innerHTML = `
-            <input type="checkbox" id="${name}" ${data.selected ? 'checked' : ''}>
-            <label for="${name}">
-                <span>${name}</span>
-                <span class="sensor-value">${data.value}${data.unit}</span>
-            </label>
-        `;
+    for (const name of sensorOrder) {
+        if (sensors[name]) {
+            const data = sensors[name];
+            const div = document.createElement('div');
+            div.className = 'sensor-item';
+            div.id = `sensor-${name.replace(/\s+/g, '-')}`;
 
-        // Add change event listener
-        div.querySelector('input').addEventListener('change', function() {
-            updateSensorSelection(name, this.checked);
-        });
+            div.innerHTML = `
+                <div class="sensor-name">${name}</div>
+                <div class="sensor-value">${data.value}${data.unit}</div>
+            `;
 
-        sensorList.appendChild(div);
+            sensorGrid.appendChild(div);
+        }
     }
-}
-
-// Update sensor selection on the server
-function updateSensorSelection(sensorName, selected) {
-    fetch(`/api/update_sensor/${sensorName}/${selected}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                sensors[sensorName].selected = selected;
-                updateCharts();
-            }
-        });
 }
 
 // Update sensor values from the server
@@ -239,8 +247,9 @@ function updateSensors() {
 // Update displayed sensor values
 function updateSensorValues() {
     for (const [name, data] of Object.entries(sensors)) {
-        const valueElement = document.querySelector(`#${name} + label .sensor-value`);
-        if (valueElement) {
+        const sensorElement = document.getElementById(`sensor-${name.replace(/\s+/g, '-')}`);
+        if (sensorElement) {
+            const valueElement = sensorElement.querySelector('.sensor-value');
             valueElement.textContent = `${data.value}${data.unit}`;
         }
     }
@@ -274,7 +283,7 @@ function updateChartDataset(chart, sensorConfigs) {
 
     // Add datasets for selected sensors
     sensorConfigs.forEach(config => {
-        if (sensors[config.sensor]?.selected && sensorHistory[config.sensor]) {
+        if (sensors[config.sensor] && sensorHistory[config.sensor]) {
             chart.data.datasets.push({
                 label: config.sensor,
                 data: sensorHistory[config.sensor],
@@ -297,6 +306,8 @@ function setupEventListeners() {
     document.getElementById('startBtn').addEventListener('click', startRecording);
     document.getElementById('stopBtn').addEventListener('click', stopRecording);
     document.getElementById('downloadBtn').addEventListener('click', downloadData);
+    document.getElementById('saveToSdBtn').addEventListener('click', saveToSd);
+    document.getElementById('updateSdPath').addEventListener('click', updateSdPath);
 }
 
 // Start recording
@@ -333,4 +344,37 @@ function updateRecordingStatus() {
 // Download recorded data
 function downloadData() {
     window.location.href = '/api/download';
+}
+
+// Save to SD card
+function saveToSd() {
+    fetch('/api/save_to_sd')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Data saved to SD card at: ${data.path}`);
+            }
+        });
+}
+
+// Update SD card path
+function updateSdPath() {
+    const pathInput = document.getElementById('sdPath');
+    const path = pathInput.value;
+
+    fetch('/api/update_sd_path', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ path: path })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(`SD card path updated to: ${data.path}`);
+        } else {
+            alert('Failed to update SD card path');
+        }
+    });
 }

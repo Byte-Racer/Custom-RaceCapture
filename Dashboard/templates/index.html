@@ -12,30 +12,40 @@
     <div class="container">
         <header>
             <h1>Dashboard</h1>
+            <h5>Built by GP, SC and ST</h5>
             <div class="controls">
                 <button id="startBtn" class="btn btn-start">Start Recording</button>
                 <button id="stopBtn" class="btn btn-stop">Stop Recording</button>
                 <button id="downloadBtn" class="btn btn-download">Save to CSV</button>
+                <button id="saveToSdBtn" class="btn btn-sd">Save to SD</button>
                 <div id="recordingStatus" class="recording-status">STOPPED</div>
             </div>
         </header>
 
-        <div class="dashboard">
-            <div class="sensor-selection">
-                <h2>Sensors</h2>
-                <div id="sensorList" class="sensor-list">
-                    <!-- Sensor checkboxes will be populated by JavaScript -->
-                </div>
-            </div>
+        <div class="sd-path-container">
+            <label for="sdPath">SD Card Path:</label>
+            <input type="text" id="sdPath" value="/mnt/sdcard">
+            <button id="updateSdPath" class="btn btn-path">Update Path</button>
+        </div>
 
-            <div class="graphs">
+        <div class="sensors-panel">
+            <h2>Sensors</h2>
+            <div id="sensorGrid" class="sensor-grid">
+                <!-- Sensor values will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="graphs-container">
+            <div class="graph-row">
                 <div class="graph-container">
                     <h2>Speed and RPM</h2>
                     <canvas id="telemetryChart"></canvas>
                 </div>
+            </div>
 
+            <div class="graph-row">
                 <div class="graph-container">
-                    <h2>Voltage and Temp</h2>
+                    <h2>Voltage and RPM</h2>
                     <canvas id="voltageTempChart"></canvas>
                 </div>
 

@@ -64,6 +64,16 @@ h1 {
     color: #1e1e2e;
 }
 
+.btn-sd {
+    background-color: #cba6f7;
+    color: #1e1e2e;
+}
+
+.btn-path {
+    background-color: #f5dcc2;
+    color: #1e1e2e;
+}
+
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -86,36 +96,56 @@ h1 {
     color: #1e1e2e;
 }
 
-.dashboard {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 20px;
+.sd-path-container {
+    background-color: #313244;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.sensor-selection {
+.sd-path-container label {
+    font-weight: 600;
+    color: #74c7ec;
+}
+
+.sd-path-container input {
+    background-color: #45475a;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 8px;
+    color: #cdd6f4;
+    font-family: 'JetBrains Mono', monospace;
+    flex-grow: 1;
+}
+
+.sensors-panel {
     background-color: #313244;
     padding: 20px;
     border-radius: 12px;
-    height: fit-content;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.sensor-selection h2 {
+.sensors-panel h2 {
     margin-bottom: 15px;
     color: #74c7ec;
     font-weight: 600;
 }
 
-.sensor-list {
-    margin-top: 15px;
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
 }
 
 .sensor-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-    padding: 10px;
-    border-radius: 8px;
     background-color: #45475a;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
@@ -123,29 +153,32 @@ h1 {
     background-color: #585b70;
 }
 
-.sensor-item input {
-    margin-right: 12px;
-    accent-color: #89b4fa;
-    transform: scale(1.2);
-}
-
-.sensor-item label {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    cursor: pointer;
+.sensor-name {
     font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #cdd6f4;
 }
 
 .sensor-value {
-    color: #f5c2e7;
+    font-size: 1.2rem;
     font-weight: 600;
+    color: #ffffff;
 }
 
-.graphs {
+.graphs-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.graph-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.graph-row:first-child {
+    grid-template-columns: 1fr;
 }
 
 .graph-container {
@@ -159,6 +192,7 @@ h1 {
     margin-bottom: 15px;
     color: #74c7ec;
     font-weight: 600;
+    text-align: center;
 }
 
 canvas {
@@ -167,7 +201,7 @@ canvas {
 }
 
 @media (max-width: 1000px) {
-    .dashboard {
+    .graph-row {
         grid-template-columns: 1fr;
     }
 
@@ -180,5 +214,15 @@ canvas {
     .controls {
         width: 100%;
         justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .sensor-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sd-path-container {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
